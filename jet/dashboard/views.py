@@ -43,10 +43,11 @@ class UpdateDashboardModuleView(SuccessMessageMixin, UpdateView):
         }
 
         if self.request.method in ('POST', 'PUT'):
-            kwargs.update({
+            kwargs |= {
                 'data': self.request.POST,
                 'files': self.request.FILES,
-            })
+            }
+
         return kwargs
 
     def get_settings_form(self):
@@ -63,10 +64,11 @@ class UpdateDashboardModuleView(SuccessMessageMixin, UpdateView):
         }
 
         if self.request.method in ('POST', 'PUT'):
-            kwargs.update({
+            kwargs |= {
                 'data': self.request.POST,
                 'files': self.request.FILES,
-            })
+            }
+
         return kwargs
 
     def get_children_formset(self):
@@ -95,8 +97,8 @@ class UpdateDashboardModuleView(SuccessMessageMixin, UpdateView):
         data['module'] = self.module
         data['settings_form'] = self.get_settings_form()
         data['children_formset'] = self.get_children_formset()
-        data['child_name'] = self.module.child_name if self.module.child_name else _('Items')
-        data['child_name_plural'] = self.module.child_name_plural if self.module.child_name_plural else _('Items')
+        data['child_name'] = self.module.child_name or _('Items')
+        data['child_name_plural'] = self.module.child_name_plural or _('Items')
         data['app'] = self.get_current_app()
         return data
 
